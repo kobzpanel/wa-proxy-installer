@@ -1,63 +1,71 @@
+bash <<'EOF'
 #!/bin/bash
 set -e
 
-echo "======================================"
-echo " WhatsApp Proxy One-Click Installer"
-echo "======================================"
+echo "Updating package list..."
+apt update
 
-if [ "$EUID" -ne 0 ]; then
-  echo "❌ Please run as root"
-  exit 1
-fi
+echo "Installing Docker and curl..."
+apt install -y docker.io curl ca-certificates
 
-echo "🔄 Updating system..."
-apt update -y >/dev/null 2>&1
+echo "Enabling and starting Docker..."
+systemctl enable --now docker
 
-echo "📦 Installing dependencies..."
-apt install -y curl ufw >/dev/null 2>&1
+echo "Pulling official WhatsApp Proxy image..."
+docker pull facebook/whatsapp_proxy:latest
 
-if ! command -v docker >/dev/null 2>&1; then
-  echo "🐳 Installing Docker..."
-  curl -fsSL https://get.docker.com | sh >/dev/null 2>&1
-fi
-
-systemctl enable docker >/dev/null 2>&1
-systemctl start docker
-
-echo "🔥 Configuring firewall..."
-ufw allow 22 >/dev/null 2>&1
-ufw allow 443 >/dev/null 2>&1
-ufw --force enable >/dev/null 2>&1
-
-echo "📥 Pulling WhatsApp Proxy image..."
-docker pull ghcr.io/whatsapp/proxy:latest >/dev/null 2>&1
-
-echo "🚀 Starting WhatsApp Proxy..."
-docker rm -f whatsapp-proxy >/dev/null 2>&1 || true
-docker run -d \
-  --name whatsapp-proxy \
-  --restart unless-stopped \
+echo "Starting WhatsApp Proxy container..."
+docker run -d --name whatsapp_proxy --restart unless-stopped \
+  -p 80:80 \
   -p 443:443 \
-  ghcr.io/whatsapp/proxy:latest >/dev/null 2>&1
+  -p 5222:5222 \
+  -p 8080:8080 \
+  -p 8443:8443 \
+  -p 8222:8222 \
+  -p 8199:8199 \
+  -p 587:587 \
+  -p 7777:7777 \
+  facebook/whatsapp_proxy:latest
 
-# Robust IP detection (fallback options)
-IP=$(curl -s https://api.ipify.org || curl -s https://ifconfig.me || curl -s https://icanhazip.com)
+echo "Configuring firewall (UFW if installed)..."
+if command -v ufw &> /dev/null; then
+  ufw allow 80/tcp
+  ufw allow 443/tcp
+  ufw allow 5222/tcp
+  ufw allow 8080/tcp
+  ufw allow 8443/tcp
+  ufw allow 8222/tcp
+  ufw allow 8199/tcp
+  ufw allow 587/tcp
+  ufw allow 7777/tcp
+  ufw reload
+  echo "UFW ports opened automatically."
+else
+  echo "UFW not found. Manually open these ports in your VPS firewall/security group:"
+  echo "80, 443, 5222, 8080, 8443, 8222, 8199, 587, 7777"
+fi
+
+IP=$(curl -s icanhazip.com)
 
 echo ""
-echo "======================================"
-echo " ✅ WHATSAPP PROXY IS READY"
-echo "======================================"
-echo " 🌐 Proxy Address : $IP:443"
+echo "=========================================="
+echo "WhatsApp Proxy Installed Successfully!"
+echo "=========================================="
+echo "Your public IP: $IP"
 echo ""
-echo " 📱 WhatsApp App Setup:"
-echo " 1. Open WhatsApp → Settings → Storage and data → Proxy"
-echo " 2. Turn on 'Use proxy'"
-echo " 3. Enter proxy address: $IP:443"
-echo " 4. Tap Save"
+echo "Recommended proxy addresses to share in WhatsApp app:"
+echo "   $IP:443   (Primary - HTTPS)"
+echo "   $IP:80    (Fallback - HTTP)"
+echo "   $IP:5222  (Alternative)"
 echo ""
-echo " ⚠️  This is a public proxy — anyone with the address can use it."
-echo "     Share responsibly (high bandwidth usage possible)."
+echo "View stats/monitoring: http://$IP:8199"
+echo "View logs: docker logs -f whatsapp_proxy"
 echo ""
-echo " 🔍 Check status: docker ps"
-echo " 🛑 Stop/remove: docker stop whatsapp-proxy && docker rm whatsapp-proxy"
-echo "======================================"
+echo "Note: First startup generates self-signed certificates (takes 1-5 minutes)."
+echo "      Check logs if needed."
+echo "To stop: docker stop whatsapp_proxy"
+echo "To restart: docker restart whatsapp_proxy"
+echo "To update: docker pull facebook/whatsapp_proxy:latest && docker restart whatsapp_proxy"
+echo ""
+echo "Share the proxy address in WhatsApp: Settings > Storage and data > Proxy > Use proxy."
+EOF
