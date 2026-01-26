@@ -1,0 +1,23 @@
+# View live logs
+docker logs -f whatsapp-proxy
+
+# Stop the proxy
+docker stop whatsapp-proxy
+
+# Start the proxy (if stopped)
+docker start whatsapp-proxy
+
+# Restart the proxy
+docker restart whatsapp-proxy
+
+# Update to latest version
+docker pull ghcr.io/whatsapp/proxy:latest && docker restart whatsapp-proxy
+
+# View proxy statistics dashboard
+# Open in browser: http://your-server-ip:8199
+
+# Completely remove (uninstall)
+docker rm -f whatsapp-proxy
+docker rmi ghcr.io/whatsapp/proxy:latest
+# (Optional: remove Docker if no longer needed)
+apt purge docker.io -y && apt autoremove -y
