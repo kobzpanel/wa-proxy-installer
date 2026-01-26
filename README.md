@@ -11,17 +11,17 @@ Uses Meta’s **official Docker image** for maximum reliability and compliance.
 
 ## ✨ Features
 
-- 🚀 True **one-click installation**
-- 🐳 Uses **official WhatsApp Proxy image**  
+-  True **one-click installation**
+-  Uses **official WhatsApp Proxy image**  
   `ghcr.io/whatsapp/proxy:latest`
 - 🔧 Automatically installs Docker (if missing)
 - 🔐 Auto-configures UFW firewall
   - Opens **port 443**
   - Keeps **SSH access**
-- ⚡ Lightweight & fast
-- 🛡️ Secure by default
-- ♻️ Easy update & management
-- ❌ No PHP, no panel, no bloat
+-  Lightweight & fast
+-  Secure by default
+-  Easy update & management
+-  No PHP, no panel, no bloat
 
 ---
 
@@ -70,11 +70,6 @@ If this project helps you, you can support its development ❤️
 
 👉 **Donate here:**  
 https://alamindev.site/payment-link/1311700226  
-
-**Donation comment:**  
-```
-WhatsApp Proxy Installer Support
-```
 
 > Donation is **optional**. Installer works without payment.
 
