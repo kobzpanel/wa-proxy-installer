@@ -1,26 +1,85 @@
 # WhatsApp Proxy One-Click Installer
 
-A simple, one-command installer for the official WhatsApp Proxy on your VPS. Uses Meta's official Docker image for reliable, secure setup.
+A simple, secure, and production-ready **one-command installer** for the **official WhatsApp Proxy** on your VPS.  
+Uses Meta’s **official Docker image** for maximum reliability and compliance.
 
-> **Important**: This proxy supports WhatsApp text chat and media (images, videos, files) routing. Voice/video calls and status updates are **not supported** (official limitation).
+> ⚠️ **Important Limitation (Official)**  
+> This proxy supports **WhatsApp text messages and media** (images, videos, documents).  
+> **Voice calls, video calls, and status updates are NOT supported.**
 
-## Features
-- True one-click installation
-- Official WhatsApp Proxy image (`ghcr.io/whatsapp/proxy:latest`)
-- Automatic Docker installation (if needed)
-- UFW firewall auto-configuration (opens port 443 + SSH)
-- Lightweight and secure – no unnecessary packages
-- Easy updates and management
+---
 
-## Requirements
-- Ubuntu/Debian-based VPS (22.04+ recommended)
+## ✨ Features
+
+- 🚀 True **one-click installation**
+- 🐳 Uses **official WhatsApp Proxy image**  
+  `ghcr.io/whatsapp/proxy:latest`
+- 🔧 Automatically installs Docker (if missing)
+- 🔐 Auto-configures UFW firewall
+  - Opens **port 443**
+  - Keeps **SSH access**
+- ⚡ Lightweight & fast
+- 🛡️ Secure by default
+- ♻️ Easy update & management
+- ❌ No PHP, no panel, no bloat
+
+---
+
+## 📋 Requirements
+
+- Ubuntu / Debian VPS  
+  - Ubuntu **22.04+ recommended**
 - Root access
-- Public IP address
-- At least 1 GB RAM (proxy is very lightweight)
+- Public IPv4 address
+- Minimum **1 GB RAM**
 
-## One-Click Installation
+---
 
-Run this command as root:
+## 🚀 One-Click Installation
+
+Run the following command **as root**:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/kobzpanel/wa-proxy-installer/refs/heads/main/install.sh | bash
+```
+
+---
+
+## 🛠️ Useful Commands
+
+### Check proxy status
+```bash
+docker ps
+```
+
+### View logs
+```bash
+docker logs whatsapp-proxy
+```
+
+### Restart proxy
+```bash
+docker restart whatsapp-proxy
+```
+
+---
+
+## 💖 Support & Donation
+
+If this project helps you, you can support its development ❤️  
+
+👉 **Donate here:**  
+https://alamindev.site/payment-link/1311700226  
+
+**Donation comment:**  
+```
+WhatsApp Proxy Installer Support
+```
+
+> Donation is **optional**. Installer works without payment.
+
+---
+
+## 📄 License
+
+MIT License
