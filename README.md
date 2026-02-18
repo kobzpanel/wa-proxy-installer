@@ -69,7 +69,7 @@ docker restart whatsapp-proxy
 If this project helps you, you can support its development ❤️  
 
 👉 **Donate here:**  
-https://alamindev.site/payment-link/1311700226  
+https://alamindev.site/payment-link/532345765551705532687879180  
 
 > Donation is **optional**. Installer works without payment.
 
